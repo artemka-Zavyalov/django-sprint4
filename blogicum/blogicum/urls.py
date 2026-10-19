@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from blog.views import RegistrationView
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -23,4 +25,8 @@ urlpatterns = [
     path('auth/registration/', RegistrationView.as_view(), name='registration'),
     path('', include('blog.urls', namespace='blog')),
     path('pages/', include('pages.urls', namespace='pages')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'pages.views.page_not_found'
+handler500 = 'pages.views.server_error'
+handler403 = 'pages.views.csrf_failure'
