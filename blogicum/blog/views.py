@@ -1,5 +1,8 @@
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from .models import Category, Post
 
@@ -51,3 +54,9 @@ def post_detail(request, post_id):
     post = get_object_or_404(get_published_posts(), pk=post_id)
     context = {'post': post}
     return render(request, 'blog/detail.html', context)
+
+
+class RegistrationView(CreateView):
+    form_class = UserCreationForm
+    template_name = 'registration/registration_form.html'
+    success_url = reverse_lazy('login')
